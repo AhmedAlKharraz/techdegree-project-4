@@ -99,7 +99,6 @@ class Game {
 
         
         if(in_array($pressedKey, $_SESSION['selected'])){
-            echo"wajfekghvdkf";
             return 'style="background-color: red" disabled';
             
         }else{

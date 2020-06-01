@@ -66,7 +66,7 @@ $game = new Game($phrase);
             array_push($_SESSION['selected'], $key);
             var_dump($phrase->selected);
             var_dump($phrase->checkLetter($key));
-            $game->handleLetterKey('a');
+            $game->handleLetterKey($key);
             ?>
 
 		</div>
