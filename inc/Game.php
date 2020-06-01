@@ -37,7 +37,7 @@ class Game {
         $output .= '</div>';
 
         $output .= '<div class="keyrow">';
-        $output .= '<button class="key" name="key" value="a">a</button>';
+        $output .= '<button class="key" name="key" value="a"'.$this->handleLetterKey('a').'>a</button>';
         $output .= '<button class="key" name="key" value="s">s</button>';
         $output .= '<button class="key" name="key" value="d">d</button>';
         $output .= '<button class="key" name="key" value="f">f</button>';
@@ -85,21 +85,23 @@ class Game {
     }
 
     public function handleLetterKey($pressedKey){
-
+        
         /*
-        foreach($game->phrase->getSelected() as $char){
+        foreach($_SESSION['selected'] as $char){
             if($pressedKey == $char){
-                //return 'style="background-color: red" disabled';
+                return 'style="background-color: red" disabled';
                 echo 'letter a';
             }else{
                 return "Try Again"; 
             }
         }
         */
+
         
-        if(in_array($pressedKey, $game->phrase->getSelected())){
+        if(in_array($pressedKey, $_SESSION['selected'])){
+            echo"wajfekghvdkf";
             return 'style="background-color: red" disabled';
-            //echo 'letter a';
+            
         }else{
             return "Try Again"; 
         }

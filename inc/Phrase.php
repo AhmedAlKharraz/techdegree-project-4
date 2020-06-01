@@ -5,7 +5,7 @@ class Phrase {
     //An string containing the current phrase to be used in the game
     private $currentPhrase;
     //An array of letters the user has guessed. Initialize the property to an empty array
-    private $selected = array();
+    public $selected = array();
     //public $phrase;
 
     //This is the constuctor that when we create object of this class, we can pass these valus directly
