@@ -25,14 +25,11 @@ include("inc/Game.php");
 include("inc/Phrase.php");
 
 //I instantiate the classes, and passed the requirement of Phrase constructor with SESSION
-$phrase = new Phrase($_SESSION['phrase'], $_SESSION['selected']);
+$phrase = new Phrase($_SESSION['phrase'], $phrase->setSelected($_POST['key']));
 $game = new Game($phrase);
 
-//var_dump($phrase);
-//var_dump($game);
-
-
-print_r(end($_SESSION['selected']));
+var_dump($phrase);
+var_dump($phrase->getSelected());
 
 ?>
 <!DOCTYPE html>
@@ -66,8 +63,8 @@ print_r(end($_SESSION['selected']));
             //I add each pressed key in $_SESSION['selected'] array
             array_push($_SESSION['selected'], $key);
 
-            //var_dump($phrase->checkLetter($key));
-            $game->handleLetterKey($key);
+            var_dump($phrase->checkLetter($key));
+            $game->handleLetterKey('a');
             ?>
 
 		</div>

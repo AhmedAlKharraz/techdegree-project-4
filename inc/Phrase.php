@@ -22,6 +22,22 @@ class Phrase {
 
     }
 
+    public function setCurrentPhrase($currentPhrase){
+        $this->currentPhrase = $currentPhrase;
+    }
+
+    public function getCurrentPhrase(){
+        return $this->currentPhrase;
+    }
+
+    public function setSelected($selected){
+        $this->selected[] = $selected;
+    }
+
+    public function getSelected(){
+        return $this->selected;
+    }
+
     //This method adds letter placeholders to the display when the game starts
     public function addPhraseToDisplay(){
 

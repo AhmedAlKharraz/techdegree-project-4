@@ -7,8 +7,6 @@ class Game {
     private $live = 5;
 
     private $allPressedKey = array();
-    //private $allPressedKey['correct'] = array();
-    //private $allPressedKey['incorrect'] = array();
 
     //This is the constuctor that when we create object of this class, we can pass these valus directly
     public function __construct($phrase){
@@ -89,7 +87,7 @@ class Game {
     public function handleLetterKey($pressedKey){
 
         /*
-        foreach($_SESSION['selected'] as $char){
+        foreach($game->phrase->getSelected() as $char){
             if($pressedKey == $char){
                 //return 'style="background-color: red" disabled';
                 echo 'letter a';
@@ -98,7 +96,8 @@ class Game {
             }
         }
         */
-        if(in_array($pressedKey, $_SESSION['selected'])){
+        
+        if(in_array($pressedKey, $game->phrase->getSelected())){
             return 'style="background-color: red" disabled';
             //echo 'letter a';
         }else{
