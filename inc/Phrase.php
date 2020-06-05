@@ -3,22 +3,38 @@
 class Phrase {
 
     //An string containing the current phrase to be used in the game
-    private $currentPhrase;
+    public $currentPhrase;
     //An array of letters the user has guessed. Initialize the property to an empty array
     public $selected = array();
-    //public $phrase;
+    public $phrases = [
+        'Boldness be my friend',
+        'Leave no stone unturned',
+        'Broken crayons still color',
+        'The adventure begins',
+        'Dream without fear',
+        'Love without limits',
+    ];
+
+    public $incorrectSelectArray = array();
+    public $correctSelectArray = array();
+
+    public $incorrectSelect = 0;
 
     //This is the constuctor that when we create object of this class, we can pass these valus directly
     public function __construct($phrase = null, $selected = []){
 
-        if(!empty($phrase)){
+        //I'm shuffiling the array to get random value
+        if($phrase == null){
+            shuffle($this->phrases);
+            $this->currentPhrase = $this->phrases[0];
+        }else{
             $this->currentPhrase = $phrase;
         }
         if(!empty($selected)){
             $this->selected[] = $selected;
         }
         
-        //$this->phrase = "dream big";
+        //echo($this->currentPhrase);
 
     }
 
@@ -51,9 +67,12 @@ class Phrase {
             if($char == " "){
                 $output .= '<li class="space '.$char.'">'.$char.'</li>';
             }else{
-                $output .= '<li class="hide letter '.$char.'">'.$char.'</li>';
-            }
-            
+                if($this->checkLetter($char)){
+                    $output .= '<li class="show letter '.$char.'">'.$char.'</li>';
+                }else{
+                    $output .= '<li class="hide letter '.$char.'">'.$char.'</li>';
+                }
+            }  
         }
         $output .= '</ul>';
         $output .= '</div>';
@@ -63,19 +82,42 @@ class Phrase {
 
     public function checkLetter($singleLetter){
 
-        //array of unique lowercase letters only in the currentPhrase
-        $characters = array_unique(str_split(str_replace(' ', '', strtolower($this->currentPhrase))));
-
-
-        if(in_array($singleLetter, $characters)){
-            echo $singleLetter;
+        if(in_array($singleLetter, $this->getLetterArray()) && in_array($singleLetter, $_SESSION['selected'])){
             return true;
         }else{
+
             return false;
         }
 
     }
+    public function getLetterArray(){
 
+        //array of unique lowercase letters only in the currentPhrase
+        $characters = array_unique(str_split(str_replace(' ', '', strtolower($this->currentPhrase))));
+        return $characters;
+        
+    }
+
+    public function numberLost(){
+
+        foreach($_SESSION['selected'] as $selected)
+        if(!in_array($selected, $this->getLetterArray())){
+            /*
+            if($this->incorrectSelect > 4){
+                header('Location: index.html');
+            }
+            */
+            array_push($this->incorrectSelectArray, $selected);
+            
+            /*
+            I don't why incorrectSelect didn't send the value to Game.php in checkForLose function
+            */
+            $this->incorrectSelect += 1;
+            $_SESSION['countLost'] = $this->incorrectSelect;
+
+        }
+
+    } 
     
 }
 

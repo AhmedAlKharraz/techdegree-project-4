@@ -12,8 +12,9 @@
 	<body>
 		<div class="main-container">
 			<h2 class="header">Phrase Hunter</h2>
-            <form action="play.php">
-                <input id="btn__reset" type="submit" value="Start Game" />
+            <form action="play.php" method="post">
+				<!-- when the player click submit, I set the post to start and check in play.php if post is start then unset all data -->
+                <input id="btn__reset" type="submit" name="start" value="Start Game" />
             </form>
 		</div>
 

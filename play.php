@@ -12,13 +12,26 @@ ini_set("html_errors", 1);
 //after setting the session
 //var_dump($_SESSION);
 
-//I set the phrase session so I can save the phrase and key that player pressed.
-if (!isset($_SESSION['phrase'])) {
-    $_SESSION['phrase'] = 'start small';
+//I'm unset all data when the game started from index.html
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['start'])){
+    unset($_SESSION['phrase']);
+    unset($_SESSION['selected']);
+    unset($_SESSION['countLost']);
+    //$_POST['key'] = ''; //check about this code it it's right, becuase it assing empty value to $_SESSION['selected'] array
 }
 
-if (!isset($_SESSION['selected'])) {
+//I set the selected session so I can save the key that player pressed.
+if(!isset($_SESSION['selected'])) {
     $_SESSION['selected'] = array();
+}
+
+if(!isset($_SESSION['countLost'])) {
+    $_SESSION['countLost'] = 0;
+}
+
+//my issue was adding the key to the 'selected' array after the HTML had been displayed. Not when the $_POST happens
+if(isset($_POST['key'])){
+    $_SESSION['selected'][] = $_POST['key'];
 }
 
 include("inc/Game.php");
@@ -28,8 +41,10 @@ include("inc/Phrase.php");
 $phrase = new Phrase($_SESSION['phrase'], $_SESSION['selected']);
 $game = new Game($phrase);
 
-//var_dump($phrase);
-//var_dump($phrase->getSelected());
+
+if(!isset($_SESSION['phrase'])) {
+    $_SESSION['phrase'] = $phrase->currentPhrase;
+}
 
 ?>
 <!DOCTYPE html>
@@ -48,25 +63,18 @@ $game = new Game($phrase);
             <h2 class="header">Phrase Hunter</h2>
 
             <?php 
-            $index;
-
-            echo($_POST['key']);
-            
 
             echo $phrase->addPhraseToDisplay(); 
             echo $game->displayKeyboard(); 
+            
+            $phrase->getLetterArray();
+            $game->handleLetterKey($_POST['key']);
+            $phrase->numberLost();
+            //I chsnged the location of display function to get thr session value after I add it in numberLost function.
             echo $game->displayScore(); 
+            
+            $game->gameOver();
 
-            if(!isset($_POST['key'])){
-                $_POST['key'] = '';
-            }
-
-            $key = $_POST['key'];            
-            //I add each pressed key in $_SESSION['selected'] array
-            array_push($_SESSION['selected'], $key);
-            var_dump($phrase->selected);
-            var_dump($phrase->checkLetter($key));
-            $game->handleLetterKey($key);
             ?>
 
 		</div>
